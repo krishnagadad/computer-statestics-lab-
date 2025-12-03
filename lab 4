@@ -1,0 +1,79 @@
+# Program: Measures of Central Tendency and Dispersion for Frequency Distribution
+
+import numpy as np
+from statistics import mode, multimode
+
+# ----- Step 1: Input data -----
+print("Enter the number of observations:")
+n = int(input())
+
+data = []
+freq = []
+
+print("\nEnter data values and their corresponding frequencies:")
+
+for i in range(n):
+    x = float(input(f"Data value {i+1}: "))
+    f = int(input(f"Frequency of {x}: "))
+    data.append(x)
+    freq.append(f)
+
+# Convert to numpy arrays for easy math
+x = np.array(data)
+f = np.array(freq)
+
+# ----- Step 2: Calculate Mean -----
+mean = np.sum(x * f) / np.sum(f)
+
+# ----- Step 3: Calculate Median -----
+# For frequency distribution, cumulative frequency is used
+cf = np.cumsum(f)
+N = np.sum(f)
+median_pos = (N + 1) / 2
+
+for i in range(len(cf)):
+    if cf[i] >= median_pos:
+        median = x[i]
+        break
+
+# ----- Step 4: Calculate Mode -----
+# For grouped data mode ≈ value with highest frequency
+modal_value = x[np.argmax(f)]
+
+# ----- Step 5: Measures of Dispersion -----
+
+# Range
+range_value = np.max(x) - np.min(x)
+
+# Variance and Standard Deviation
+mean_diff_sq = np.sum(f * (x - mean)**2)
+variance = mean_diff_sq / np.sum(f)
+std_dev = np.sqrt(variance)
+
+# Mean Deviation
+mean_deviation = np.sum(f * np.abs(x - mean)) / np.sum(f)
+
+# Quartile Deviation
+# Cumulative frequency already computed
+Q1_pos = N / 4
+Q3_pos = 3 * N / 4
+
+def find_quartile_value(cf, x, qpos):
+    for i in range(len(cf)):
+        if cf[i] >= qpos:
+            return x[i]
+
+Q1 = find_quartile_value(cf, x, Q1_pos)
+Q3 = find_quartile_value(cf, x, Q3_pos)
+quartile_deviation = (Q3 - Q1) / 2
+
+# ----- Step 6: Display Results -----
+print("\n===== RESULTS =====")
+print(f"Mean = {mean:.2f}")
+print(f"Median = {median:.2f}")
+print(f"Mode = {modal_value:.2f}")
+print(f"Range = {range_value:.2f}")
+print(f"Variance = {variance:.2f}")
+print(f"Standard Deviation = {std_dev:.2f}")
+print(f"Mean Deviation = {mean_deviation:.2f}")
+print(f"Quartile Deviation = {quartile_deviation:.2f}")
