@@ -1,0 +1,42 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import norm,binom,poisson,bernoulli
+
+data=[2,3,3,4,4,5,5,6,6,7]
+
+mean = np.mean(data)
+var = np.var(data)
+n = len(data)
+p = 0.5
+lam = mean
+
+print("Mean=",mean)
+print("Variance=",var)
+
+x=np.linspace(min(data),max(data),100)
+plt.subplot(2,2,1)
+plt.plot(x,norm.pdf(x,mean,np.sqrt(var)),color='r')
+plt.title("Normal Distribution")
+
+x=np.arange(0,n+1)
+plt.subplot(2,2,2)
+plt.bar(x,binom.pmf(x,n,p),color='b')
+plt.title("Binomial Distribution")
+
+x=np.arange(0,max(data)+3)
+plt.subplot(2,2,3)
+plt.bar(x,poisson.pmf(x,lam),color='g')
+plt.title("Poisson Distribution")
+
+x=[0,1]
+plt.subplot(2,2,4)
+plt.bar(x,bernoulli.pmf(x,p),color='orange')
+plt.title("Bernoulli Distribution")
+
+plt.tight_layout()
+plt.show()
+
+print("\nNormal:Continuous bell-shaped curve:")
+print("\nBinomial:Fixed trails with success probability:")
+print("\nPoisson:Counts of rare events:")
+print("\nBernoulli:Single trail success/failure:")
