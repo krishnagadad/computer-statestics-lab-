@@ -1,0 +1,25 @@
+import re  # Import regex module
+
+# Sample data
+data = [
+    "John Doe, Age:25, Email: john.doe@example.com",
+    "Jane Smith, Age:30, Email: jane_smith@company.org",
+    "Bob, Age:22, Email: bob22@domain.co.in"
+]
+print("=== RAW DATA ===")
+for d in data:
+    print(d)
+print("\n=== CLEANED DATA ===")
+for record in data:
+    # Remove extra spaces and make lowercase
+    record = record.strip().lower()
+    # Extract values using regex
+    name = re.search(r'^[a-z ]+', record)
+    age = re.search(r'age[:\s]*(\d+)', record)
+    email = re.search(r'[\w\.-]+@[\w\.-]+', record)
+    # Clean values
+    name = name.group().title().strip()
+    age = int(age.group(1))
+    email = email.group()
+    # Display cleaned info
+    print(f"Name: {name}, Age: {age}, Email: {email}")
