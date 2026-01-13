@@ -1,0 +1,28 @@
+import numpy as np
+from scipy import stats
+
+# ---- Sample Data ----
+sample1 = np.array([12, 15, 14, 10, 13, 12, 14])
+sample2 = np.array([10, 9, 12, 8, 9, 11, 10])
+paired_before = np.array([20, 22, 19, 24, 18])
+paired_after  = np.array([21, 20, 20, 23, 19])
+
+# ---- 1. One-Sample t-Test ----
+# Test if mean differs from hypothesized mean (e.g., μ0 = 12)
+mu0 = 12
+t1, p1 = stats.ttest_1samp(sample1, mu0)
+print("=== One-Sample t-Test ===")
+print(f"t = {t1:.3f}, p = {p1:.4f}")
+print("=> " + ("Significant difference from mean" if p1 < 0.05 else "No significant difference"))
+
+# ---- 2. Two-Sample (Independent) t-Test ----
+t2, p2 = stats.ttest_ind(sample1, sample2, equal_var=False)
+print("\n=== Two-Sample t-Test ===")
+print(f"t = {t2:.3f}, p = {p2:.4f}")
+print("=> " + ("Samples differ significantly" if p2 < 0.05 else "No significant difference between samples"))
+
+# ---- 3. Paired-Sample t-Test ----
+t3, p3 = stats.ttest_rel(paired_before, paired_after)
+print("\n=== Paired-Sample t-Test ===")
+print(f"t = {t3:.3f}, p = {p3:.4f}")
+print("=> " + ("Significant change (before vs after)" if p3 < 0.05 else "No significant change"))
