@@ -1,0 +1,46 @@
+# Simple One-way and Two-way ANOVA
+
+import pandas as pd
+from scipy import stats
+import statsmodels.api as sm
+from statsmodels.formula.api import ols
+
+# ====================================
+# ONE-WAY ANOVA
+# ====================================
+# Example: 3 groups of student scores
+group1 = [85, 89, 86, 88, 90]
+group2 = [78, 74, 77, 72, 75]
+group3 = [82, 85, 84, 83, 86]
+
+# Perform one-way ANOVA
+f, p = stats.f_oneway(group1, group2, group3)
+
+print("----- ONE-WAY ANOVA -----")
+print("F-value:", round(f, 3))
+print("P-value:", round(p, 3))
+
+if p < 0.05:
+    print("Result: Significant difference between groups\n")
+else:
+    print("Result: No significant difference between groups\n")
+
+# ====================================
+# TWO-WAY ANOVA
+# ====================================
+# Example dataset
+data = {
+    'Score': [85, 89, 86, 88, 90, 78, 74, 77, 72, 75,
+              82, 85, 84, 83, 86, 88, 90, 91, 87, 89],
+    'Method': ['A']*10 + ['B']*10,
+    'Gender': ['Male', 'Female']*10
+}
+
+df = pd.DataFrame(data)
+
+# Two-way ANOVA model
+model = ols('Score ~ C(Method) + C(Gender) + C(Method):C(Gender)', data=df).fit()
+anova_table = sm.stats.anova_lm(model, typ=2)
+
+print("----- TWO-WAY ANOVA -----")
+print(anova_table)
