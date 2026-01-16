@@ -1,0 +1,51 @@
+# Import libraries 
+import numpy as np 
+import pandas as pd 
+from scipy.stats import pearsonr, spearmanr 
+from sklearn.linear_model import LinearRegression 
+import matplotlib.pyplot as plt 
+import seaborn as sns 
+# Sample Dataset 
+x = np.array([10, 20, 30, 40, 50, 60]) 
+y = np.array([15, 25, 35, 45, 55, 65]) 
+df = pd.DataFrame({"X": x, "Y": y}) 
+# ----------------------------- 
+# 1. Pearson Correlation 
+# ----------------------------- 
+pear_corr, _ = pearsonr(df["X"], df["Y"]) 
+print("Pearson Correlation:", pear_corr) 
+# ----------------------------- 
+# 2. Rank Correlation (Spearman) 
+# ----------------------------- 
+rank_corr, _ = spearmanr(df["X"], df["Y"]) 
+print("Spearman Rank Correlation:", rank_corr) 
+# ----------------------------- 
+# 3. Linear Regression 
+# ----------------------------- 
+X_reshaped = df[['X']]  # 2D array 
+model = LinearRegression() 
+model.fit(X_reshaped, df['Y']) 
+print("\nRegression Equation: Y = {:.2f}X + {:.2f}".format(model.coef_[0], model.intercept_)) 
+# ----------------------------- 
+# 4. XY Scatter Plot 
+# ----------------------------- 
+plt.figure(figsize=(6, 4)) 
+plt.scatter(df["X"], df["Y"], label="Data Points") 
+plt.plot(df["X"], model.predict(X_reshaped), label="Regression Line") 
+plt.xlabel("X") 
+plt.ylabel("Y") 
+plt.title("X-Y Scatter Plot with Regression Line") 
+plt.legend() 
+plt.grid(True) 
+plt.show() 
+# ----------------------------- 
+# 5. Heatmap of Correlation Matrix 
+# ----------------------------- 
+plt.figure(figsize=(5, 4)) 
+sns.heatmap(df.corr(), annot=True, cmap="coolwarm") 
+plt.title("Correlation Matrix Heatmap") 
+plt.show() 
+output: 
+Pearson Correlation: 0.9999999999999999 
+Spearman Rank Correlation: 1.0 
+Regression Equation: Y = 1.00X + 5.00
